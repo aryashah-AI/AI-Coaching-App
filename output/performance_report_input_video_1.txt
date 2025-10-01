@@ -1,0 +1,62 @@
+================================================================================
+TRIPLE JUMP PERFORMANCE ANALYSIS REPORT
+================================================================================
+
+Video Analyzed: input_video_1.mp4
+Analysis Date: 2025-10-01 00:21:56
+Model Version: 1.0
+Model Created: 2025-10-01T00:06:44.974871
+
+OVERALL PERFORMANCE SCORE: 51.9/100
+
+HOP PHASE ANALYSIS:
+----------------------------------------
+Performance Score: 71.8/100
+
+Angle Comparison:
+  Left Knee Avg: 127.3° (Reference: 125.0°, Difference: +2.2°)
+  Right Knee Avg: 116.5° (Reference: 107.4°, Difference: +9.0°)
+  Left Hip Avg: 127.3° (Reference: 125.0°, Difference: +2.2°)
+  Right Hip Avg: 116.5° (Reference: 107.4°, Difference: +9.0°)
+
+Recommendations:
+  • Excellent technique! Keep up the good work.
+
+STEP PHASE ANALYSIS:
+----------------------------------------
+Performance Score: 31.3/100
+
+Angle Comparison:
+  Left Knee Avg: 124.9° (Reference: 107.4°, Difference: +17.4°)
+  Right Knee Avg: 118.7° (Reference: 108.6°, Difference: +10.1°)
+  Left Hip Avg: 124.9° (Reference: 107.4°, Difference: +17.4°)
+  Right Hip Avg: 118.7° (Reference: 108.6°, Difference: +10.1°)
+
+Recommendations:
+  1. In step phase: left knee is too extended (+17.4°). Focus on maintaining better knee flexion for optimal power transfer.
+  2. In step phase: right knee is too extended (+10.1°). Focus on maintaining better knee flexion for optimal power transfer.
+  3. In step phase: left hip shows excessive extension (+17.4°). Focus on hip flexor strength and mobility.
+  4. In step phase: right hip shows excessive extension (+10.1°). Focus on hip flexor strength and mobility.
+
+JUMP PHASE ANALYSIS:
+----------------------------------------
+Performance Score: 52.6/100
+
+Angle Comparison:
+  Left Knee Avg: 101.0° (Reference: 117.0°, Difference: -16.0°)
+  Right Knee Avg: 100.2° (Reference: 103.2°, Difference: -3.0°)
+  Left Hip Avg: 101.0° (Reference: 117.0°, Difference: -16.0°)
+  Right Hip Avg: 100.2° (Reference: 103.2°, Difference: -3.0°)
+
+Recommendations:
+  1. In jump phase: left knee is over-flexed (-16.0°). Work on improving leg extension for better distance.
+  2. In jump phase: left hip is under-extended (-16.0°). Work on hip extension power for better takeoff.
+
+SPECIFIC TRAINING RECOMMENDATIONS:
+----------------------------------------
+1. In step phase: right hip shows excessive extension (+10.1°). Focus on hip flexor strength and mobility.
+2. In step phase: left knee is too extended (+17.4°). Focus on maintaining better knee flexion for optimal power transfer.
+3. In step phase: right knee is too extended (+10.1°). Focus on maintaining better knee flexion for optimal power transfer.
+4. In jump phase: left hip is under-extended (-16.0°). Work on hip extension power for better takeoff.
+5. In step phase: left hip shows excessive extension (+17.4°). Focus on hip flexor strength and mobility.
+6. In jump phase: left knee is over-flexed (-16.0°). Work on improving leg extension for better distance.

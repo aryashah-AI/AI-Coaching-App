@@ -1,0 +1,9 @@
+opencv-python
+mediapipe
+numpy
+matplotlib
+pandas
+scipy
+dtw-python
+tqdm
+openpyxl
