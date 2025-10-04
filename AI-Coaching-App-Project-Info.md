@@ -1,4 +1,4 @@
-# Project Technical & Domain Overview
+# Project Domain and Technical Overview
 
 This document explains how the Triple Jump Analysis System works: the domain concepts, algorithms, code architecture, and how outputs are produced (annotated video, charts, and a performance report).
 
