@@ -1,0 +1,25 @@
+2025-10-27 20:46:37,810 [INFO] werkzeug: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.81.234.3:5000
+2025-10-27 20:46:37,810 [INFO] werkzeug: [33mPress CTRL+C to quit[0m
+2025-10-27 20:46:53,735 [INFO] werkzeug: 127.0.0.1 - - [27/Oct/2025 20:46:53] "GET / HTTP/1.1" 200 -
+2025-10-27 20:46:54,477 [INFO] werkzeug: 127.0.0.1 - - [27/Oct/2025 20:46:54] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-10-27 20:47:07,136 [INFO] TripleJumpApp: Starting performance analysis on video: base/static/uploads/Benchmark_1.mp4
+2025-10-27 20:47:07,137 [INFO] TripleJumpApp: Using trained model for performance analysis: base/static/uploads/triple_jump_model.pkl
+2025-10-27 20:47:07,334 [INFO] TripleJumpApp: Model loaded successfully from base/static/uploads/triple_jump_model.pkl
+2025-10-27 20:47:07,334 [INFO] TripleJumpApp: Starting performance analysis for video: base/static/uploads/Benchmark_1.mp4
+2025-10-27 20:47:49,403 [INFO] TripleJumpApp: Creating annotated video output...
+2025-10-27 20:47:49,404 [INFO] TripleJumpApp: Output video will be saved to: base/static/uploads/Benchmark_1_annotated.webm
+2025-10-27 20:48:57,670 [INFO] TripleJumpApp: Annotated video created successfully: base/static/uploads/Benchmark_1_annotated.webm
+2025-10-27 20:48:57,671 [INFO] TripleJumpApp: Performance report generated: base/static/uploads/performance_report_Benchmark_1.txt
+2025-10-27 20:48:57,671 [INFO] TripleJumpApp: Performance analysis completed. Generated 3 phase metrics.
+2025-10-27 20:48:57,672 [INFO] TripleJumpApp: Raw output video path: base/static/uploads/Benchmark_1_annotated.webm
+2025-10-27 20:48:57,672 [INFO] TripleJumpApp: Converted video path: uploads/Benchmark_1_annotated.webm
+2025-10-27 20:48:57,672 [INFO] TripleJumpApp: Video file exists: True
+2025-10-27 20:48:57,687 [INFO] werkzeug: 127.0.0.1 - - [27/Oct/2025 20:48:57] "POST /athlete HTTP/1.1" 200 -
+2025-10-27 20:49:01,649 [INFO] werkzeug: 127.0.0.1 - - [27/Oct/2025 20:49:01] "[35m[1mGET /static/uploads/Benchmark_1_annotated.webm HTTP/1.1[0m" 206 -
+2025-10-27 20:49:01,690 [INFO] werkzeug: 127.0.0.1 - - [27/Oct/2025 20:49:01] "[35m[1mGET /static/uploads/Benchmark_1_annotated.webm HTTP/1.1[0m" 206 -
+2025-10-27 20:49:01,739 [INFO] werkzeug: 127.0.0.1 - - [27/Oct/2025 20:49:01] "[35m[1mGET /static/uploads/Benchmark_1_annotated.webm HTTP/1.1[0m" 206 -
+2025-10-27 20:49:01,741 [INFO] werkzeug: 127.0.0.1 - - [27/Oct/2025 20:49:01] "[35m[1mGET /static/uploads/Benchmark_1_annotated.webm HTTP/1.1[0m" 206 -
+2025-10-27 20:49:01,760 [INFO] werkzeug: 127.0.0.1 - - [27/Oct/2025 20:49:01] "[35m[1mGET /static/uploads/Benchmark_1_annotated.webm HTTP/1.1[0m" 206 -

@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Triple Jump Analysis Results</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #6c757d;
+            --secondary-color: #495057;
+            --accent-color: #007bff;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --warning-color: #ffc107;
+            --dark-color: #343a40;
+            --light-color: #f8f9fa;
+            --gradient-bg: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--gradient-bg);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(108, 117, 125, 0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+            color: var(--dark-color);
+            font-size: 1.5rem;
+        }
+
+        .main-container {
+            padding: 2rem 0;
+        }
+
+        .results-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(108, 117, 125, 0.1);
+        }
+
+        .status-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(108, 117, 125, 0.1);
+        }
+
+        .status-icon {
+            font-size: 2.5rem;
+            margin-right: 1rem;
+        }
+
+        .status-icon.success {
+            color: var(--success-color);
+        }
+
+        .status-icon.error {
+            color: var(--error-color);
+        }
+
+        .status-text h2 {
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+
+        .status-text p {
+            color: var(--primary-color);
+            margin-bottom: 0;
+        }
+
+        .video-container {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .video-player {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .metric-card {
+            background: rgba(248, 249, 250, 0.8);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(108, 117, 125, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .metric-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .metric-icon {
+            font-size: 1.5rem;
+            margin-right: 0.75rem;
+            color: var(--accent-color);
+        }
+
+        .metric-title {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin: 0;
+        }
+
+        .metric-value {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--primary-color);
+            margin-top: 0.5rem;
+        }
+
+        .phases-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .phase-item {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 0.75rem 1rem;
+            margin: 0.5rem 0;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .phase-item:hover {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .events-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .event-item {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 0.75rem 1rem;
+            margin: 0.5rem 0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .event-item:hover {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .event-icon {
+            margin-right: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .takeoff {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .takeoff .event-icon {
+            color: var(--success-color);
+        }
+
+        .landing {
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .landing .event-icon {
+            color: var(--warning-color);
+        }
+
+        .training-info {
+            background: rgba(248, 249, 250, 0.8);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(108, 117, 125, 0.1);
+        }
+
+        .training-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .training-metric {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+        }
+
+        .training-metric .value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+
+        .training-metric .label {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+
+        .error-container {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .error-icon {
+            font-size: 4rem;
+            color: var(--error-color);
+            margin-bottom: 1rem;
+        }
+
+        .btn-back {
+            background: var(--primary-color);
+            border: none;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+        }
+
+        .btn-back:hover {
+            background: var(--secondary-color);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .btn-back i {
+            margin-right: 0.5rem;
+        }
+
+        /* Performance Analysis Styles */
+        .performance-summary {
+            margin: 2rem 0;
+            padding: 2rem;
+            background: rgba(248, 249, 250, 0.8);
+            border-radius: 12px;
+            border: 1px solid rgba(108, 117, 125, 0.1);
+        }
+
+        .overall-score {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 8px 24px rgba(0, 123, 255, 0.2);
+        }
+
+        .score-text {
+            text-align: center;
+        }
+
+        .score-number {
+            font-size: 2rem;
+            line-height: 1;
+        }
+
+        .score-label {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .score-category .excellent { color: var(--success-color); }
+        .score-category .good { color: var(--accent-color); }
+        .score-category .average { color: var(--warning-color); }
+        .score-category .needs-improvement { color: var(--error-color); }
+
+        .summary-card {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            border: 1px solid rgba(108, 117, 125, 0.1);
+        }
+
+        .summary-text {
+            margin-top: 1rem;
+            line-height: 1.6;
+            color: var(--dark-color);
+        }
+
+        .phase-performance {
+            margin: 2rem 0;
+        }
+
+        .phase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .phase-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(108, 117, 125, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .phase-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .phase-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(108, 117, 125, 0.1);
+        }
+
+        .phase-score {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .phase-score.excellent {
+            background: rgba(40, 167, 69, 0.1);
+            color: var(--success-color);
+        }
+
+        .phase-score.good {
+            background: rgba(0, 123, 255, 0.1);
+            color: var(--accent-color);
+        }
+
+        .phase-score.average {
+            background: rgba(255, 193, 7, 0.1);
+            color: var(--warning-color);
+        }
+
+        .phase-score.poor {
+            background: rgba(220, 53, 69, 0.1);
+            color: var(--error-color);
+        }
+
+        .angle-comparison {
+            margin: 1rem 0;
+        }
+
+        .angle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(108, 117, 125, 0.05);
+        }
+
+        .angle-name {
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        .angle-values {
+            color: var(--primary-color);
+        }
+
+        .angle-values small {
+            opacity: 0.7;
+        }
+
+        .recommendations {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(248, 249, 250, 0.6);
+            border-radius: 8px;
+        }
+
+        .recommendations ul {
+            margin-top: 0.5rem;
+            padding-left: 1rem;
+        }
+
+        .recommendations li {
+            margin: 0.25rem 0;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: var(--dark-color);
+        }
+
+        @media (max-width: 768px) {
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .training-metrics {
+                grid-template-columns: 1fr;
+            }
+            
+            .status-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .status-icon {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+
+            .overall-score {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .phase-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .score-circle {
+                width: 100px;
+                height: 100px;
+            }
+
+            .score-number {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <div class="container">
+            <span class="navbar-brand">
+                <i class="fas fa-running"></i>
+                Triple Jump AI - Results
+            </span>
+    </div>
+</nav>
+
+<div class="main-container">
+    <div class="container">
+        {% if error %}
+        <!-- Error State -->
+        <div class="results-card">
+            <div class="error-container">
+                <i class="fas fa-exclamation-triangle error-icon"></i>
+                <h2>Analysis Failed</h2>
+                <p class="mt-3">{{ message or 'An error occurred during
+                    processing.' }}</p>
+                <a class="btn-back" href="/">
+                    <i class="fas fa-arrow-left"></i>
+                    Try Again
+                </a>
+            </div>
+        </div>
+        {% else %}
+        <!-- Success State -->
+        <div class="results-card">
+            <div class="status-header">
+                <i class="fas fa-check-circle status-icon success"></i>
+                <div class="status-text">
+                    {% if mode == "training" %}
+                    <h2>Training Completed</h2>
+                    <p>{{ message or 'Model training has been completed
+                        successfully.' }}</p>
+                    {% else %}
+                    <h2>Analysis Completed</h2>
+                    <p>{{ message or 'Video analysis has been completed
+                        successfully.' }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if mode == "training" %}
+            <!-- Training Results -->
+            <div class="training-info">
+                <h4><i class="fas fa-dumbbell"></i> Training Summary</h4>
+                <div class="training-metrics">
+                    <div class="training-metric">
+                        <div class="value">{{ num_videos or 'N/A' }}</div>
+                        <div class="label">Training Videos</div>
+                    </div>
+                    <div class="training-metric">
+                        <div class="value"><i class="fas fa-check"></i></div>
+                        <div class="label">Status</div>
+                    </div>
+                    <div class="training-metric">
+                        <div class="value">{{ model_path.split('/')[-1] if
+                            model_path else 'N/A' }}
+                        </div>
+                        <div class="label">Model File</div>
+                    </div>
+                </div>
+                {% if model_path %}
+                <p class="mt-3"><strong>Model saved to:</strong> <code>{{
+                    model_path }}</code></p>
+                {% endif %}
+            </div>
+            {% elif results %}
+            <!-- Analysis Results -->
+            {% if video_out %}
+            <div class="video-container">
+                <h4><i class="fas fa-video"></i> Analyzed Video</h4>
+                <video class="video-player" controls height="480" width="640">
+                    <source src="{{ url_for('static', filename=video_out) }}"
+                            type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            {% endif %}
+
+            {% if performance_metrics %}
+            <!-- Performance Analysis Results -->
+            <div class="performance-summary">
+                <h4><i class="fas fa-trophy"></i> Performance Analysis</h4>
+                <div class="overall-score">
+                    <div class="score-circle">
+                        <div class="score-text">
+                            <span class="score-number">{{ "%.1f"|format(overall_score) }}</span>
+                            <span class="score-label">/100</span>
+                        </div>
+                    </div>
+                    <div class="score-description">
+                        <h5>Overall Performance Score</h5>
+                        <p class="score-category">
+                            {% if overall_score >= 85 %}
+                            <span class="excellent">Excellent Performance</span>
+                            {% elif overall_score >= 70 %}
+                            <span class="good">Good Performance</span>
+                            {% elif overall_score >= 55 %}
+                            <span class="average">Average Performance</span>
+                            {% else %}
+                            <span class="needs-improvement">Needs Improvement</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Summary Text -->
+            {% if summary %}
+            <div class="summary-card">
+                <h5><i class="fas fa-clipboard-list"></i> Performance Summary
+                </h5>
+                <div class="summary-text">{{ summary|replace('\n', '<br>')|safe
+                    }}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Phase Performance Breakdown -->
+            <div class="phase-performance">
+                <h5><i class="fas fa-chart-bar"></i> Phase Performance
+                    Breakdown</h5>
+                <div class="phase-grid">
+                    {% for metric in performance_metrics %}
+                    <div class="phase-card">
+                        <div class="phase-header">
+                            <h6>{{ metric.phase.title() }} Phase</h6>
+                            <div class="phase-score {{ 'excellent' if metric.performance_score >= 85 else 'good' if metric.performance_score >= 70 else 'average' if metric.performance_score >= 55 else 'poor' }}">
+                                {{ "%.1f"|format(metric.performance_score)
+                                }}/100
+                            </div>
+                        </div>
+                        <div class="angle-comparison">
+                            {% for angle_type, actual_value in
+                            metric.actual_angles.items() %}
+                            {% set reference_value =
+                            metric.reference_angles.get(angle_type, 0) %}
+                            {% set difference =
+                            metric.differences.get(angle_type, 0) %}
+                            <div class="angle-row">
+                                <span class="angle-name">{{ angle_type.replace('_', ' ').title() }}</span>
+                                <span class="angle-values">
+                                                            {{ "%.1f"|format(actual_value) }}° 
+                                                            <small>(ref: {{ "%.1f"|format(reference_value) }}°)</small>
+                                                        </span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% if metric.recommendations %}
+                        <div class="recommendations">
+                            <strong>Recommendations:</strong>
+                            <ul>
+                                {% for rec in metric.recommendations %}
+                                <li>{{ rec }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="analysis-grid">
+                <!-- Frame Count -->
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <i class="fas fa-film metric-icon"></i>
+                        <h5 class="metric-title">Total Frames</h5>
+                    </div>
+                    <div class="metric-value">{{ results.frame_count or 'N/A'
+                        }}
+                    </div>
+                </div>
+
+                <!-- Detected Events -->
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <i class="fas fa-flag metric-icon"></i>
+                        <h5 class="metric-title">Detected Events</h5>
+                    </div>
+                    {% if results.events %}
+                    <ul class="events-list">
+                        {% for event in results.events %}
+                        <li class="event-item {{ event }}">
+                            {% if event == 'takeoff' %}
+                            <i class="fas fa-plane-departure event-icon"></i>
+                            {% else %}
+                            <i class="fas fa-plane-arrival event-icon"></i>
+                            {% endif %}
+                            {{ event.title() }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <div class="metric-value">No events detected</div>
+                    {% endif %}
+                </div>
+
+                <!-- Identified Phases -->
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <i class="fas fa-running metric-icon"></i>
+                        <h5 class="metric-title">Identified Phases</h5>
+                    </div>
+                    {% if results.phases %}
+                    <ul class="phases-list">
+                        {% for phase in results.phases %}
+                        <li class="phase-item">
+                            <strong>{{ loop.index }}.</strong> {{ phase.title()
+                            }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <div class="metric-value">No phases identified</div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Back Button -->
+            <div class="text-center mt-4">
+                <a class="btn-back" href="/">
+                    <i class="fas fa-arrow-left"></i>
+                    Analyze Another Video
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Add smooth animations on load
+    document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.results-card, .metric-card');
+        cards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+
+            setTimeout(() => {
+                card.style.transition = 'all 0.6s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+    });
+
+    // Add copy functionality for model path
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            // Show success message (you could implement a toast here)
+            console.log('Copied to clipboard: ' + text);
+        });
+    }
+</script>
+</body>
+</html>

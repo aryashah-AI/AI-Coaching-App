@@ -62,7 +62,7 @@ Triple-Jump/
 The entrypoint is `app.py`. By default it targets `input/input_video_4.mp4` and writes outputs to `output/`.
 
 ```bash
-python app.py
+python ai_test_app.py
 ```
 
 At runtime, you will be prompted:
