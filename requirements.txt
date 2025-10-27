@@ -7,3 +7,4 @@ scipy
 dtw-python
 tqdm
 openpyxl
+flask
