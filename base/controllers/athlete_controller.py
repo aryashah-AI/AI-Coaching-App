@@ -30,7 +30,7 @@ def generate_performance_summary(performance_metrics, overall_score):
 
     if all_recommendations:
         unique_recommendations = list(set(all_recommendations))[
-                                 :3]  # Top 3 recommendations
+            :3]  # Top 3 recommendations
         summary_parts.append("Key Recommendations:")
         for i, rec in enumerate(unique_recommendations, 1):
             summary_parts.append(f"{i}. {rec}")
@@ -128,15 +128,18 @@ def athlete():
 
                     # Create correct path for Flask static file serving
                     logger.info(f"Raw output video path: {output_video_path}")
-                    
+
                     if output_video_path and os.path.exists(output_video_path):
                         # Convert base/static/uploads/video.mp4 to uploads/video.mp4
-                        video_filename = output_video_path.replace("base/static/", "")
+                        video_filename = output_video_path.replace(
+                            "base/static/", "")
                         logger.info(f"Converted video path: {video_filename}")
-                        logger.info(f"Video file exists: {os.path.exists(output_video_path)}")
+                        logger.info(
+                            f"Video file exists: {os.path.exists(output_video_path)}")
                     else:
                         video_filename = None
-                        logger.warning(f"Video output not available or doesn't exist: {output_video_path}")
+                        logger.warning(
+                            f"Video output not available or doesn't exist: {output_video_path}")
 
                     return render_template("results.html",
                                            mode="inference",

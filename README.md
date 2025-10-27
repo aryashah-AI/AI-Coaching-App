@@ -1,122 +1,163 @@
-# Triple Jump Analysis System
+# AI Coaching App — Triple Jump (Flask Dashboard)
 
-AI based custom project to detect triple jump phases (hop, step, jump) using MediaPipe Pose and computer vision, generate annotated output videos, charts, and a performance report using a trained reference model.
+AI-powered Flask dashboard to analyze triple jump technique. Upload your video(
+s), detect phases (hop, step, jump) using MediaPipe Pose, and get an annotated
+output video, analysis chart, and a detailed performance report. You can also
+train a reference model from multiple videos and evaluate new runs against it.
 
 ---
 
 ## Quick Start
 
 ### 1) Prerequisites
-- Python 3.9+ recommended
-- OS: Linux/macOS/Windows
-- FFmpeg (optional but recommended for best MP4 compatibility)
+
+- Python 3.9+ (Linux/macOS/Windows)
+- FFmpeg (optional; useful for video codec conversions)
+- System packages required by OpenCV/MediaPipe as per your OS
 
 ### 2) Create and activate a virtual environment
+
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
 ```
 
 ### 3) Install dependencies
+
 ```bash
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### 4) Project structure
-```
-Triple-Jump/
-  app.py
-  ai_model/
-    triple_jump_model.pkl        # created after training (or already provided)
-  dataset/
-    Benchmark_1.mp4
-    Benchmark_2.mp4
-    Benchmark_3.mp4
-    Benchmark_4.mp4
-  input/
-    input_video_1.mp4
-    input_video_2.mp4
-    input_video_3.mp4
-    input_video_4.mp4            # default input used by app.py
-  output/                        # results are written here
-  requirements.txt
-```
-
----
-
-## How it works (at a glance)
-- Extracts pose keypoints per frame via MediaPipe.
-- Computes joint angles and detects takeoff/landing events.
-- Classifies phases: hop → step → jump.
-- Optionally trains a reference model (average angles per phase) from `dataset/` videos.
-- Analyzes an `input/` video against the reference model and generates:
-  - Annotated MP4 with overlays
-  - Analysis PNG chart
-  - Text report with phase-wise scores and recommendations
-
----
-
-## Running the program
-
-The entrypoint is `app.py`. By default it targets `input/input_video_4.mp4` and writes outputs to `output/`.
+### 4) Run the Flask server
 
 ```bash
-python ai_test_app.py
+python main.py
 ```
 
-At runtime, you will be prompted:
-- If a model exists at `ai_model/triple_jump_model.pkl`, choose:
-  1. Use existing model for analysis
-  2. Retrain model
-- If a model does not exist, choose:
-  1. Train new model (mapped to retrain)
-  2. Basic analysis only
-
-Outputs appear in `output/`:
-- `<video_name>_output.mp4` (annotated video)
-- `analysis_results_<video_name>.png` (charts)
-- `performance_report_<video_name>.txt` (detailed report)
+Then open your browser at `http://127.0.0.1:5000/` (or
+`http://localhost:5000/`).
 
 ---
 
-## Typical workflows
+## Project Structure
 
-### A) Use existing model for analysis
-1. Ensure `ai_model/triple_jump_model.pkl` exists.
-2. Place your test video in `input/` and set `INPUT_VIDEO_FILE_PATH` in `app.py` if needed.
-3. Run `python app.py` and choose option `1`.
-
-### B) Train a new model, then analyze
-1. Put 2+ benchmark videos into `dataset/` (already included as examples).
-2. Run `python app.py` and choose option `2`.
-3. The script will train a model from `dataset/` and then analyze the target input video.
-
-### C) Basic analysis only (no model comparison)
-- If you choose basic analysis, the system still extracts phases/angles and produces the annotated video and charts. The performance report requires a trained model.
+```
+AI-Coaching-App/
+  main.py                          # Flask entrypoint
+  requirements.txt
+  logs/
+    base.log                      # application logs
+  base/
+    __init__.py                   # creates Flask app (templates/static registered)
+    controllers/
+      athlete_controller.py       # routes: upload page and analysis handler
+    services/
+      athlete_service.py          # core CV/ML logic (MediaPipe, angles, events, video annotate)
+    templates/
+      upload.html                 # dashboard UI (mode select + upload)
+      results.html                # results UI (video, metrics, summary)
+    static/
+      uploads/                    # uploaded videos and generated outputs
+        Benchmark_1.mp4
+        Benchmark_2.mp4
+        Benchmark_3.mp4
+        Benchmark_4.mp4
+        Benchmark_1_annotated.webm
+        analysis_results.png
+        performance_report_Benchmark_1.txt
+        triple_jump_model.pkl     # created after training
+    utils/
+      logger.py                   # writes to logs/base.log
+      exception.py
+  test/
+    ai_test_app.py
+```
 
 ---
 
-## Configuration
-- Edit these constants in `app.py` as needed:
-  - `AI_MODEL_FILE_PATH`: model pickle path (default: `ai_model/triple_jump_model.pkl`)
-  - `DATASET_FILE_PATH_LIST`: training video list (defaults to items in `dataset/`)
-  - `INPUT_VIDEO_FILE_PATH`: the input video to analyze (default: `input/input_video_4.mp4`)
-  - `OUTPUT_DIR`: output folder (default: `output/`)
+## Using the Dashboard
+
+1) Open the dashboard at `/` and choose an Analysis Mode:
+
+- Training Mode (`mode=train`)
+    - Upload 2 or more videos; the app will compute phase-wise average angles
+      and create a model at `base/static/uploads/triple_jump_model.pkl`.
+- Analysis Mode (`mode=inference`)
+    - Upload a video to analyze. If a trained model exists, the app computes
+      performance metrics and recommendations compared to the model.
+
+2) Upload your video files (MP4/AVI/MOV)
+
+- Files are saved to `base/static/uploads/`.
+
+3) Submit to start processing
+
+- You’ll be redirected to the results page when done.
+
+---
+
+## Outputs
+
+All generated files are written to `base/static/uploads/`:
+
+- Annotated video: `<video_name>_annotated.webm`
+- Analysis chart: `analysis_results.png`
+- Performance report: `performance_report_<video_name>.txt`
+
+Example artifacts already in this repository:
+
+- Annotated
+  sample: [Benchmark_1_annotated.webm](base/static/uploads/Benchmark_1_annotated.webm)
+- Analysis
+  chart: [analysis_results.png](base/static/uploads/analysis_results.png)
+-
+Report: [performance_report_Benchmark_1.txt](base/static/uploads/performance_report_Benchmark_1.txt)
+
+Note: The annotated video is generated with a WebM (VP8) codec for broad
+browser compatibility.
+
+---
+
+## Routes and Flow
+
+- `GET /` → renders `upload.html` (mode selection + file upload UI)
+- `POST /athlete` → handles Training or Analysis
+    - Saves uploads to `base/static/uploads/`
+    - Training: builds model and shows training summary on `results.html`
+    - Analysis: runs detection, compares with model (if present), and shows
+      annotated video, metrics, and summary on `results.html`
+
+---
+
+## Configuration and Paths
+
+- Uploads directory: `base/services/athlete_service.py` →
+  `UPLOAD_FOLDER = base/static/uploads`
+- Allowed formats: `mp4`, `avi`, `mov`
+- Trained model: `base/static/uploads/triple_jump_model.pkl`
+- Logs: `logs/base.log` (configured in `base/utils/logger.py`)
 
 ---
 
 ## Troubleshooting
-- OpenCV cannot open video:
-  - Verify the path and codec. Try converting with FFmpeg: `ffmpeg -i input.mp4 -vcodec libx264 -acodec aac output_fixed.mp4`.
-- MediaPipe runtime errors on CPU-only systems:
-  - Upgrade `mediapipe` and `opencv-python` to latest; ensure Python version compatibility.
-- Empty or noisy detections:
-  - Ensure the athlete is clearly visible and well-lit; adjust thresholds in `detect_events` if necessary.
-- No model found / report missing:
-  - Train first (option 2) to generate `ai_model/triple_jump_model.pkl`.
+
+- OpenCV cannot open video
+    - Verify path/codec; try converting with FFmpeg, e.g.:
+  ```bash
+  ffmpeg -i input.mp4 -c:v libvpx -b:v 2M -c:a libvorbis output.webm
+  ```
+- MediaPipe runtime errors
+    - Upgrade `mediapipe` and `opencv-python` to match your Python/OS; ensure
+      you have system dependencies installed.
+- “No trained model found” in Analysis Mode
+    - First run Training Mode with 2+ videos to create `triple_jump_model.pkl`.
+- Browser cannot play video
+    - Use a modern browser (WebM support). If needed, transcode to another
+      format with FFmpeg.
 
 ---
 
 ## License
+
 This project is provided as-is for research and educational use.
